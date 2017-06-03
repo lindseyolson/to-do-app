@@ -42,6 +42,7 @@ app.get ('/tasks', function(req, res){
     } // end error
     else {
       console.log('connected to db');
+      
       done();
       res.sendStatus(200);
     } // end no error
