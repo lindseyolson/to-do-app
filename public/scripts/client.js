@@ -18,21 +18,31 @@ var addTask = function(){
     type: 'POST',
     url: '/add',
     data: objectToSend,
-    success: function (response) {
-      console.log('back from post call with:', response);
-    } // end success
+    success: getTasks
   }); // end AJAX
   // set value of input to an empty string
   $('#inputToDo').val('');
 }; // end addItem function
 
 var completeTask = function(){
-  // add class of completed
-  // this.parent completed
-  // create object to send to server
-  // completed = true
-  // ajax post request
-  // move to the bottom of the list
+  // var $thisParent = $(this).parent();
+  // // add class of completed
+  // $thisParent.addClass('completed');
+  // // create object to send to server
+  // var objectToSend = {
+  //   task:
+  //   completed: true
+  // };
+  //   // ajax post request
+  // $.ajax({
+  //   type: 'POST',
+  //   url: '/completed',
+  //   data: objectToSend,
+  //   success: function(response){
+  //     console.log('post hit response:', response);
+  //     // move to the bottom of the list
+  //   } // end success
+  // }); // end AJAX
 }; // end completeItem function
 
 var deleteTask = function(){
@@ -50,17 +60,20 @@ var getTasks = function(){
     type: 'GET',
     url: '/tasks',
     success: function(response){
-      console.log('back from get call with:', response);
+      updateList(response);
     } // end success
   }); // end AJAX
-  // run updateList function upon success to display on dom
-
 }; // end getItems function
 
 var updateList = function(taskArr){
-  // empty <ul>
-  // for loop to run through array
-  // append each <li> item to <ul id="listItem">
-  // append completed button
-  // append deleted button
+  $('#toDoList').empty();
+  for (var i = 0; i < taskArr.length; i++) {
+    var $listItem = $('<li>');
+    $listItem.append(taskArr[i].task);
+    // append completed button
+    // $listItem.append('<button id="completeItem">complete</button>');
+    // append deleted button
+    // $listItem.append('<button id="deleteItem">delete</button>');
+    $('#toDoList').append($listItem);
+  } // end for loop
 }; // end updateList function
