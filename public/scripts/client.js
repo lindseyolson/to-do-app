@@ -47,17 +47,26 @@ var completeTask = function(){
   }); // end AJAX
 }; // end completeItem function
 
-var parent = $(".itemExtraFieldslist");
-var childToMoveLast = $(".price", parent).remove();
-parent.append(childToMoveLast);
-
 var deleteTask = function(){
   // append alert asking are you sure?
-  // this.parent remove
+  var $thisParent = $(this).parent();
+  // add class of completed
+  $thisParent.addClass('deleted');
   // create object to send to server
-  // delete item in db
-  // ajax post request
-  // remove from dom
+  var objectToSend = {
+    task: $thisParent.text()
+  };
+    // ajax post request
+  $.ajax({
+    type: 'POST',
+    url: '/delete',
+    data: objectToSend,
+    success: function(response){
+      console.log('post hit response:', response);
+      // move to the bottom of the list
+      $thisParent.remove();
+    } // end success
+  }); // end AJAX
 }; // end deleteItem function
 
 var getTasks = function(){
@@ -67,6 +76,10 @@ var getTasks = function(){
     url: '/tasks',
     success: function(response){
       updateList(response);
+      /////////// try to make them stay in order
+      // var $completedItems = $('.completed');
+      // $completedItems.remove();
+      // $('#toDoList').append($completedItems);
     } // end success
   }); // end AJAX
 }; // end getItems function

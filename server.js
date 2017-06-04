@@ -92,5 +92,18 @@ app.post  ('/completed', function(req, res){
 }); // end /complete post
 
 app.post  ('/delete', function(req, res){
+  console.log('post hit to /delete:', req.body);
+  pool.connect(function(err, connection, done){
+    if (err) {
+      console.log('error');
+      done();
+      res.sendStatus(400);
+    } // end error
+    else {
+      connection.query ('DELETE FROM tasks WHERE task = $1', [req.body.task]);
+      done();
+      res.sendStatus(200);
+    } // end no error
+  }); // end pool connect
 
 }); // end /delete post
