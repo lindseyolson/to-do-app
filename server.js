@@ -75,8 +75,20 @@ app.post ('/add', function(req, res){
   }); // end pool connect
 }); // end /task post
 
-app.post  ('/complete', function(req, res){
-
+app.post  ('/completed', function(req, res){
+  console.log('post hit to /completed:', req.body);
+  pool.connect(function(err, connection, done){
+    if (err) {
+      console.log('error');
+      done();
+      res.sendStatus(400);
+    } // end error
+    else {
+      connection.query ('UPDATE tasks SET completed = TRUE WHERE task = $1', [req.body.task]);
+      done();
+      res.sendStatus(200);
+    } // end no error
+  }); // end pool connect
 }); // end /complete post
 
 app.post  ('/delete', function(req, res){

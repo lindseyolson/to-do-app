@@ -1,8 +1,8 @@
 $(document).ready(function(){
   console.log('JQJS');
   $('#submit').on('click', addTask);
-  $('#toDoList').on('click', '#completeItem', completeTask);
-  $('#toDoList').on('click', '#deleteItem', deleteTask);
+  $('#toDoList').on('click', '.completeButton', completeTask);
+  $('#toDoList').on('click', '.deleteButton', deleteTask);
   getTasks();
 }); // end doc ready
 
@@ -25,25 +25,31 @@ var addTask = function(){
 }; // end addItem function
 
 var completeTask = function(){
-  // var $thisParent = $(this).parent();
-  // // add class of completed
-  // $thisParent.addClass('completed');
-  // // create object to send to server
-  // var objectToSend = {
-  //   task:
-  //   completed: true
-  // };
-  //   // ajax post request
-  // $.ajax({
-  //   type: 'POST',
-  //   url: '/completed',
-  //   data: objectToSend,
-  //   success: function(response){
-  //     console.log('post hit response:', response);
-  //     // move to the bottom of the list
-  //   } // end success
-  // }); // end AJAX
+  var $thisParent = $(this).parent();
+  // add class of completed
+  $thisParent.addClass('completed');
+  // create object to send to server
+  var objectToSend = {
+    task: $thisParent.text(),
+    completed: true
+  };
+    // ajax post request
+  $.ajax({
+    type: 'POST',
+    url: '/completed',
+    data: objectToSend,
+    success: function(response){
+      console.log('post hit response:', response);
+      // move to the bottom of the list
+      $thisParent.remove();
+      $('#toDoList').append($thisParent);
+    } // end success
+  }); // end AJAX
 }; // end completeItem function
+
+var parent = $(".itemExtraFieldslist");
+var childToMoveLast = $(".price", parent).remove();
+parent.append(childToMoveLast);
 
 var deleteTask = function(){
   // append alert asking are you sure?
@@ -68,12 +74,12 @@ var getTasks = function(){
 var updateList = function(taskArr){
   $('#toDoList').empty();
   for (var i = 0; i < taskArr.length; i++) {
-    var $listItem = $('<li>');
+    var $listItem = $('<li class="listItem">');
     $listItem.append(taskArr[i].task);
     // append completed button
-    // $listItem.append('<button id="completeItem">complete</button>');
+    $listItem.append('<input type="submit" value="completed" class="completeButton">');
     // append deleted button
-    // $listItem.append('<button id="deleteItem">delete</button>');
-    $('#toDoList').append($listItem);
+    $listItem.append('<input type="submit" value="delete" class="deleteButton">');
+    $('#toDoList').prepend($listItem);
   } // end for loop
 }; // end updateList function
