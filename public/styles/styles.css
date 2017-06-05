@@ -1,7 +1,8 @@
 .completed {
-
+color: #BEBABA;
+text-decoration: line-through;
 }
 
 .deleted{
-  
+
 }

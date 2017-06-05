@@ -46,7 +46,7 @@ app.get ('/tasks', function(req, res){
       // create query string
       // tell db to run query
       // hold results in variable
-      var resultSet = connection.query ('SELECT task FROM tasks');
+      var resultSet = connection.query ('SELECT * FROM tasks');
       resultSet.on('row', function (row){
         allTasks.push(row);
       }); // end resultSet
@@ -68,7 +68,7 @@ app.post ('/add', function(req, res){
       res.sendStatus(400);
     } // end error
     else {
-      connection.query ('INSERT INTO tasks (task, completed) VALUES ($1, false)', [req.body.task]);
+      connection.query ('INSERT INTO tasks (task, completed) VALUES ($1, $2)', [req.body.task, req.body.completed]);
       done();
       res.sendStatus(200);
     } // end no error

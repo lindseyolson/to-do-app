@@ -10,7 +10,8 @@ var addTask = function(){
   // take in input
   // create object of input to send to db
   var objectToSend = {
-    task: $('#inputToDo').val()
+    task: $('#inputToDo').val(),
+    completed: false
   };
   console.log('sending:', objectToSend);
   // ajax post request sending object
@@ -25,12 +26,9 @@ var addTask = function(){
 }; // end addItem function
 
 var completeTask = function(){
-  var $thisParent = $(this).parent();
-  // add class of completed
-  $thisParent.addClass('completed');
   // create object to send to server
   var objectToSend = {
-    task: $thisParent.text(),
+    task: $(this).parent().text(),
     completed: true
   };
     // ajax post request
@@ -38,34 +36,21 @@ var completeTask = function(){
     type: 'POST',
     url: '/completed',
     data: objectToSend,
-    success: function(response){
-      console.log('post hit response:', response);
-      // move to the bottom of the list
-      $thisParent.remove();
-      $('#toDoList').append($thisParent);
-    } // end success
+    success: getTasks
   }); // end AJAX
 }; // end completeItem function
 
 var deleteTask = function(){
-  // append alert asking are you sure?
-  var $thisParent = $(this).parent();
-  // add class of completed
-  $thisParent.addClass('deleted');
   // create object to send to server
   var objectToSend = {
-    task: $thisParent.text()
+    task: $(this).parent().text()
   };
     // ajax post request
   $.ajax({
     type: 'POST',
     url: '/delete',
     data: objectToSend,
-    success: function(response){
-      console.log('post hit response:', response);
-      // move to the bottom of the list
-      $thisParent.remove();
-    } // end success
+    success: $(this).parent().remove()
   }); // end AJAX
 }; // end deleteItem function
 
@@ -76,10 +61,6 @@ var getTasks = function(){
     url: '/tasks',
     success: function(response){
       updateList(response);
-      /////////// try to make them stay in order
-      // var $completedItems = $('.completed');
-      // $completedItems.remove();
-      // $('#toDoList').append($completedItems);
     } // end success
   }); // end AJAX
 }; // end getItems function
@@ -87,12 +68,19 @@ var getTasks = function(){
 var updateList = function(taskArr){
   $('#toDoList').empty();
   for (var i = 0; i < taskArr.length; i++) {
-    var $listItem = $('<li class="listItem">');
+    var $listItem = $('<li>');
+    // append task
     $listItem.append(taskArr[i].task);
-    // append completed button
-    $listItem.append('<input type="submit" value="completed" class="completeButton">');
     // append deleted button
     $listItem.append('<input type="submit" value="delete" class="deleteButton">');
-    $('#toDoList').prepend($listItem);
+    if (taskArr[i].completed === false){
+      // append completed button
+      $listItem.append('<input type="submit" value="completed" class="completeButton">');
+      $('#toDoList').prepend($listItem);
+    } // end if statement
+    else {
+      $listItem.addClass('completed');
+      $('#toDoList').append($listItem);
+    } // end else statement
   } // end for loop
 }; // end updateList function
