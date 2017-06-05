@@ -1,8 +1,8 @@
 $(document).ready(function(){
   console.log('JQJS');
   $('#submit').on('click', addTask);
-  $('#toDoList').on('click', '.completeButton', completeTask);
-  $('#toDoList').on('click', '.deleteButton', deleteTask);
+  $('#toDoList').on('click', '.checkbox', completeTask);
+  $('#toDoList').on('click', 'span', deleteTask);
   getTasks();
 }); // end doc ready
 
@@ -31,6 +31,7 @@ var completeTask = function(){
     task: $(this).parent().text(),
     completed: true
   };
+  console.log('sending:', objectToSend);
     // ajax post request
   $.ajax({
     type: 'POST',
@@ -42,16 +43,19 @@ var completeTask = function(){
 
 var deleteTask = function(){
   // create object to send to server
-  var objectToSend = {
-    task: $(this).parent().text()
-  };
-    // ajax post request
-  $.ajax({
-    type: 'POST',
-    url: '/delete',
-    data: objectToSend,
-    success: $(this).parent().remove()
-  }); // end AJAX
+  // confirm('Are you sure you want to delete?');
+  if (confirm('Are you sure you want to delete?') === true) {
+    var objectToSend = {
+      task: $(this).parent().text()
+    };
+      // ajax post request
+    $.ajax({
+      type: 'POST',
+      url: '/delete',
+      data: objectToSend,
+      success: $(this).parent().remove()
+    }); // end AJAX
+  } // end if statement
 }; // end deleteItem function
 
 var getTasks = function(){
@@ -72,14 +76,16 @@ var updateList = function(taskArr){
     // append task
     $listItem.append(taskArr[i].task);
     // append deleted button
-    $listItem.append('<input type="submit" value="delete" class="deleteButton">');
+    // $listItem.append('<input type="submit" value="delete" class="deleteButton">');
+    $listItem.append('<span type="submit" class="fa fa-trash"></span>');
     if (taskArr[i].completed === false){
-      // append completed button
-      $listItem.append('<input type="submit" value="completed" class="completeButton">');
+      $listItem.prepend('<input type="checkbox" class="checkbox" />');
       $('#toDoList').prepend($listItem);
+      // $listItem.append('<input type="submit" value="completed" class="completeButton">');
     } // end if statement
     else {
       $listItem.addClass('completed');
+      $listItem.prepend('<input type="checkbox" class="checked" checked="true"/>');
       $('#toDoList').append($listItem);
     } // end else statement
   } // end for loop

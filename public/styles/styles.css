@@ -1,8 +1,56 @@
+li {
+  font-family: Verdana;
+  font-size: 14px;
+  list-style: none;
+  border-bottom: 1px dotted gray;
+  padding: 0.5em;
+  width: 25em;
+  /*background-color: gray;*/
+}
+
+span {
+  float: right;
+  color: black;
+  font-size: 24px;
+}
+
+.checkbox {
+  margin-right: 0.5em;
+}
+
+.checked {
+  margin-right: 0.5em;
+}
+
+#submit {
+  font-size: 14px;
+  font-family: Verdana;
+}
+
+#inputToDo {
+  font-size: 14px;
+  font-family: Verdana;
+  width: 17em;
+  display: inline-block;
+}
+
+#toDoList {
+  margin-top: 1em;
+}
+
+h3 {
+  display: inline-block;
+  font-size: 10px;
+  padding-left: 0.75em;
+}
+
+.header {
+  border-bottom: 1px dotted black;
+  width: 26em;
+  margin-left: 1.5em;
+}
+
 .completed {
 color: #BEBABA;
 text-decoration: line-through;
-}
-
-.deleted{
-
 }
