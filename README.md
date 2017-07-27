@@ -1,14 +1,10 @@
-## TO DO APP
-===
-Author: Lindsey Olson
-Date: 6/5/2017
-===
+## To Do App
 
-Created a to do list application creating a full stack application from the Dom to the database.
+Created a to do list application using the full-stack.
+The app allows the user to:
+- create a task (gets saved to db)
+- each task has the option to "complete" or "delete", which is represented visually and updated in the db
 
-- created front end experience to: create task, complete task & delete task
-- all tasks, completed status and deleted tasks are stored on the database as well as displayed on the DOM
-- there is a visual difference between a completed task and an uncompleted task
-- all tasks are stored on the database, whether it is completed or not
-- the items move to the bottom of the list when completed
-- confirm box pops up when one of the items is deleted 
+Technology used: HTML, CSS, JavaScript, jQuery, Node.js, Express, SQL
+
+###### 6/5/2017
